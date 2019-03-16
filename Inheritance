@@ -1,0 +1,113 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+class pers_rec
+{
+protected:
+    char *name;
+    int age;
+    int ht;
+public:
+
+    pers_rec()
+    {
+        strcpy(name,"no name");
+        age=0;
+        ht=0;
+    }
+   pers_rec(char *n,int  a,int h)
+    {
+       int len;
+		len = strlen(n);
+		name = new char[len+1];
+		strcpy(name,n);
+
+        age=a;
+        ht=h;
+    }
+};
+
+class prof_rec
+{
+protected:
+    int exp;
+    int salary;
+    public:
+    prof_rec()
+    {
+        exp=0;
+        salary=0;
+    }
+    prof_rec(int e,int s)
+    {
+        exp=e;
+        salary=s;
+    }
+};
+
+class acad_rec
+{
+    protected:
+    int jee_score;
+    float perc;
+    public:
+        acad_rec()
+        {
+            jee_score=0;
+            perc=0;
+        }
+       acad_rec(int j,int p)
+        {
+            jee_score=j;
+            perc=p;
+        }
+};
+
+class bio_data:public pers_rec,public prof_rec,public acad_rec
+{
+    int b_gp;
+    public:
+        bio_data(char *n,int h,int a,int j,int p,int s,int e,int b): pers_rec(n,h,a),prof_rec(j,p),acad_rec(s,e)
+        {
+            b_gp=b;
+        }
+    void display()
+    {
+        cout<<"\n----Personal record-----\n";
+        cout<<"Name: "<<name<<"\tHeight: "<<ht<<"\tAge: "<<age;
+        cout<<"\n\n----Professional Record----\n";
+        cout<<"JEE score: "<<jee_score<<"\tPERCENTAGE: "<<perc;
+        cout<<"\n\n----Academic Record-----\n";
+        cout<<"Salary: "<<salary<<"\tExperience: "<<exp<<"\tBlood group: "<<b_gp;
+    }
+};
+int main()
+{
+    bio_data *b[3];
+    char n[40];
+    int a,h,j,p,bg,s,exp,i=0;
+    int c=3;
+    while(c--)
+    {
+    cout<<"\n\nNAME: ";
+    cin>>n;
+    cout<<"Height: ";
+    cin>>h;
+    cout<<"AGE: ";
+    cin>>a;
+    cout<<"jee score: ";
+    cin>>j;
+    cout<<"percenntage: ";
+    cin>>p;
+    cout<<"bloood group: ";
+    cin>>bg;
+    cout<<"salary: ";
+    cin>>s;
+    cout<<"exp: ";
+    cin>>exp;
+     b[i]=new bio_data(n,h,a,j,p,s,exp,bg);
+     b[i]->display();
+     i++;
+    }
+}

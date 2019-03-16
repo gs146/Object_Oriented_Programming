@@ -1,0 +1,103 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+class complex1
+{
+  int real,img;
+  public:
+  complex1()
+  {
+    real=0; img=0;
+  }
+  complex1(int x,int y)
+  {
+    real=x;
+    img=y;
+  }
+   friend istream &operator>>(istream &input, complex1 &c1);
+   friend ostream &operator<<(ostream &output, complex1 &c1);
+   friend complex1 operator +(complex1 ,complex1);
+   friend complex1 operator -(complex1 ,complex1 );
+
+  complex1 operator *(complex1 c1)
+  {
+    complex1 c;
+    c.real=real*c1.real-img*c1.img;
+    c.img=real*c1.img+img*c1.real;
+    return(c);
+  }
+
+  complex1 operator /(complex1 c1)
+  {
+    complex1 c;
+    c.real=(real*c1.real+img*c1.img)/(c1.real*c1.real+c1.img*c1.img);
+    c.img=(real*c1.img-img*c1.real)/(c1.real*c1.real+c1.img*c1.img);
+    return(c);
+  }
+
+
+};
+
+complex1 operator +(complex1 c1,complex1 c2)
+{
+ complex1 sum;
+ sum.real=c1.real+c2.real;
+ sum.img=c1.img+c2.img;
+ return(sum);
+}
+
+complex1 operator -(complex1 c1,complex1 c2)
+{
+ complex1 sub;
+ sub.real=c1.real-c2.real;
+ sub.img=c1.img-c2.img;
+ return(sub);
+}
+
+istream &operator>>(istream &input, complex1 &c)
+{
+ input>>c.real;
+ input>>c.img;
+  return(input);
+}
+
+ostream &operator<<(ostream &output, complex1 &c)
+{
+ if(c.img>0)
+ output<<c.real<<"+"<<c.img<<"i\n";
+
+ else
+ output<<c.real<<c.img<<"i\n";
+ return(output);
+}
+
+int main()
+{
+ complex1 c1(3,4),c2(4,5),c3,c4,c5,c6;
+ cout<<"\nENTER FIRST COMPLEX NUMBER:";
+ cin>>c1;
+ cout<<"\nENTER SECOND COMPLEX NUMBER:";
+ cin>>c2;
+ cout<<"\nFIRST COMPLEX NO:";
+ cout<<c1;
+ cout<<"\nSECOND COMPLEX NO:";
+ cout<<c2;
+
+ c3=c1+c2;
+
+ c4=c1-c2;
+ cout<<"\nADDITION IS:";
+ cout<<c3;
+ cout<<"\nSUBTRACTION IS:";
+ cout<<c4;
+
+ c5=c1*c2;
+ cout<<"\nPRODUCT IS:";
+ cout<<c5;
+
+ c6=c1/c2;
+ cout<<"\nDIVISION IS:";
+ cout<<c6;
+}
+

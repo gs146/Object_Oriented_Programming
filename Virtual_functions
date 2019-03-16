@@ -1,0 +1,59 @@
+#include<iostream>
+
+using namespace std;
+
+class shape
+{
+protected:
+    double l,b;
+public:
+    shape()
+    {
+        l=0;b=0;
+    }
+
+    void input()
+    {
+        cout<<"\nENTER THE VALUES OF SIDES: ";
+        cin>>l>>b;
+    }
+
+    virtual void compute_area( )=0;  //pure vritual function
+
+};
+
+class rectangle: public shape
+{
+    int area;
+     void compute_area()
+    {
+        area=l*b;
+        cout<<"\nAREA: "<<area;
+    }
+};
+
+class triangle: public shape
+{
+    int a;
+     void compute_area()
+    {
+        a=(l*b)/2;
+        cout<<"\nAREA: "<<a;
+    }
+};
+
+int main()
+{
+    shape *s1;
+    rectangle r;
+    s1=&r;
+    cout<<"RECTANGLE----\n";
+    r.input( );
+    s1->compute_area( );
+
+    triangle t;
+    s1=&t;
+    cout<<"\n\nTRIANGLE---- ";
+    t.input( );
+    s1->compute_area( );
+}

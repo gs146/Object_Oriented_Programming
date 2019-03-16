@@ -1,0 +1,263 @@
+#include<bits/stdc++.h>
+using namespace std;
+class stud
+{
+    int len;
+    protected:
+        char *name,*dob,*bg;
+    public:
+        stud(char *s,char *da,char *bgp)
+        {
+            len=strlen(s);
+            name=new char[len+1];
+            strcpy(name,s);
+            len=strlen(da);
+            dob=new char[len+1];
+            strcpy(dob,da);
+            len=strlen(bgp);
+            bg=new char[len+1];
+            strcpy(bg,bgp);
+        }
+};
+class stud1
+{
+    protected:
+        int ht,wt;
+    public:
+        stud1(int h,int w)
+        {
+            ht=h;
+            wt=w;
+        }
+};
+class stud2
+{
+    int len;
+    protected:
+        int ipn;
+        char *addr;
+    public:
+        stud2(int pn,char *ad)
+        {
+            ipn=pn;
+            len=strlen(ad);
+            addr=new char[len+1];
+            strcpy(addr,ad);
+        }
+};
+class stud3 :protected stud,stud1,stud2
+{
+    int tele,dl;
+public:
+    stud3(char *s,char *da,char *bgp,int h,int w,int pn,char *ad,int tl,int dln):stud(s,da,bgp),stud1(h,w),stud2(pn,ad)
+    {
+        tele=tl;dl=dln;
+    }
+    void display();
+    void update(char m[],int *f);
+    int delete1(char m[],int *f,int j);
+    int search1(char m[],int *f,int j);
+};
+void stud3 :: display()
+{
+    cout<<"_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=\n";
+    cout<<"NAME=="<<name<<"\n";
+    cout<<"DATE OF BIRTH=="<<dob<<"\n";
+    cout<<"BLOOD GROUP=="<<bg<<"\n";
+    cout<<"HEIGHT=="<<ht<<"\n";
+    cout<<"WEIGHT=="<<wt<<"\n";
+    cout<<"INSURENCE POLICY NUMBER=="<<ipn<<"\n";
+    cout<<"CONTACT ADDRESS=="<<addr<<"\n";
+    cout<<"TELEPHONE NUMBER=="<<tele<<"\n";
+    cout<<"DRIVING LICENSE NUMBER=="<<dl<<"\n";
+    cout<<"_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=\n";
+}
+void stud3 :: update(char m[],int *f)
+{
+    int x,p;
+    x=strlen(name);
+    p=strlen(m);
+    if(x!=p)
+        return;
+    else if(x==p)
+    {
+        for(int i=0;i<x;i++)
+        {
+            if(name[i]!=m[i])
+                return;
+        }
+    }
+
+        *f=1;
+        cout<<"what you want to update\n1.name\n2.date of birth\n3.blood group\n4.height\n5.weight\n6.insurance number\n7.contact address\n8.telephone no.\n9.driving license no.\n ";
+        cin>>x;
+        switch(x)
+        {
+            case 1:cout<<"enter the new name\n";
+                   cin>>m;
+                   delete name;p=strlen(m);name=new char[p+1];
+                   strcpy(name,m);cout<<"__________updated successfully___________\n";
+                   break;
+            case 2:cout<<"enter the date of birth\n";
+                    cin>>m;
+                    delete dob;p=strlen(m);dob=new char[p+1];
+                    strcpy(dob,m);cout<<"__________updated successfully___________\n";break;
+            case 3:cout<<"enter the blood group \n";
+                    cin>>m;
+                    delete bg;p=strlen(m);bg=new char[p+1];
+                    strcpy(bg,m);cout<<"__________updated successfully___________\n";break;
+            case 4:cout<<"enter the height\n";
+                    cin>>p;
+                    ht=p;cout<<"__________updated successfully___________\n";break;
+            case 5:cout<<"enter the weight\n";
+                    cin>>p;
+                    wt=p;cout<<"__________updated successfully___________\n";break;
+            case 6:cout<<"enter the insurance number\n";
+                    cin>>p;
+                    ipn=p;cout<<"__________updated successfully___________\n";break;
+            case 7:cout<<"enter the contact address \n";
+                    cin>>m;
+                    delete addr;p=strlen(m);addr=new char[p+1];
+                    strcpy(addr,m);cout<<"__________updated successfully___________\n";break;
+            case 8:cout<<"enter the telephone number\n";
+                    cin>>p;
+                    tele=p;cout<<"__________updated successfully___________\n";break;
+            case 9:cout<<"enter the driving license no.\n";
+                    cin>>p;
+                    dl=p;cout<<"__________updated successfully___________\n";break;
+    }
+}
+int stud3 :: delete1(char m[],int *f,int j)
+{
+    int x,p;
+    x=strlen(name);
+    p=strlen(m);
+    if(x!=p)
+        return 100;
+    else if(x==p)
+    {
+        for(int i=0;i<x;i++)
+        {
+            if(name[i]!=m[i])
+                return 100;
+        }
+    }
+    *f=1;
+    return j;
+}
+int stud3 :: search1(char m[],int *f,int j)
+{
+    int x,p;
+    x=strlen(name);
+    p=strlen(m);
+    if(x!=p)
+        return 100;
+    else if(x==p)
+    {
+        for(int i=0;i<x;i++)
+        {
+            if(name[i]!=m[i])
+                return 100;
+        }
+    }
+    *f=1;
+    return j;
+}
+int main()
+{
+    stud3 *su[30];
+    int i=0,r=100,j,x,flag=1,q=1,h,wt,pn,tele,dln,w=1,f=1000;
+    char s[20],da[20],bgp[20],ad[30];
+    while(flag)
+    {
+        cout<<"which operation you want to perform\n1.ADD INFO\n2.UPDATE INFO\n3.DELETE INFO\n4.DISPLAY\n5.SEARCH\n";
+        cin>>x;
+        switch(x)
+        {
+            case 1: q=1;
+                    while(q==1)
+                    {
+                    cout<<"enter the name:\n";
+                    cin>>s;
+                    cout<<"\nenter the date of birth in format DD/MM/YY:\n";
+                    cin>>da;
+                    cout<<"\nenter the blood group:\n";
+                    cin>>bgp;
+                    cout<<"\nenter the height(in cm):\n";
+                    cin>>h;
+                    cout<<"\nenter the weight:\n";
+                    cin>>w;
+                    cout<<"\nenter the insurance policy number:\n";
+                    cin>>pn;
+                    cout<<"\nenter the contact address:\n";
+                    cin>>ad;
+                    cout<<"\nenter the telephone number:\n";
+                    cin>>tele;
+                    cout<<"\nenter the driving license number:\n";
+                    cin>>dln;
+
+                    su[i]=new stud3(s,da,bgp,h,wt,pn,ad,tele,dln);i++;
+                    cout<<"you want to add more info of another one press 1 otherwise 0\n";
+                    cin>>q;
+                    }
+                    break;
+            case 2: w=1;f=1000;
+                    while(w)
+                    {
+                    cout<<"enter the name for which you want to update info\n";
+                    cin>>s;
+                    for(int j=0;j<i;j++)
+                    {
+                    su[j]->update(s,&f);
+                    }
+                    if(f==1000)
+                    {
+                    cout<<"enter the valid name\n";
+                    }
+                    cout<<"want to update more info......press 1 else 0\n";
+                    cin>>w;
+                    }break;
+            case 3: f=1000;r=100;
+                    cout<<"enter the name for which you want to delete info\n";
+                    cin>>s;
+                    for(int j=0;j<i;j++)
+                    {
+                    r=su[j]->delete1(s,&f,j);
+                    if(r!=100)
+                        break;
+                    }
+                    if(f==1000 || r==100)
+                    {
+                    cout<<"enter the valid name\n";
+                    break;}
+                    for(int j=r;j<i-1;j++)
+                    {
+                        su[j]=su[j+1];
+                    }
+                    delete su[i];
+                    cout<<"______________record is deleted___________\n";
+                    i--;break;
+            case 4: for(int j=0;j<i;j++)
+                    {
+                        su[j]->display();
+                    }break;
+            case 5: f=1000;r=100;
+                    cout<<"enter the name for which you want to search info\n";
+                    cin>>s;
+                    for(int j=0;j<i;j++)
+                    {
+                        r=su[j]->search1(s,&f,j);
+                        if(r!=100)
+                            break;
+                    }
+                    if(f==1000 || r==100)
+                    {
+                    cout<<"enter the valid name\n";
+                    break;}
+                    su[r]->display();
+                    break;
+        }
+        cout<<"you want to continue press 1 otherwise 0\n";
+        cin>>flag;
+    }
+}

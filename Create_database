@@ -1,0 +1,371 @@
+#include<iostream>
+#include<fstream>
+ 
+using namespace std;
+ 
+struct student
+{
+    int roll;
+    char name[20];
+    int m1, m2;
+    float per;
+};
+ 
+void del_all_rec();
+void createdb();
+void displaydb();
+void addrec();
+void searchrec();
+void editrec();
+int deleterec();
+ 
+int main()
+{
+    int n = 0, x, pos;
+    char dummy, str[20], c;
+    struct student s;
+    do
+    {
+	    cout<<"\n1.Create database";
+	    cout<<"\n2.Display database";
+	    cout<<"\n3.Add record";
+	    cout<<"\n4.Search record";
+	    cout<<"\n5.Modify record";
+	    cout<<"\n6.Delete record \n";
+	    cin>>x;
+	    switch(x)
+	        {
+	            case 1: del_all_rec();
+	                    do
+	                    {
+	                        cout<<"\nEnter record :";
+	                        createdb();
+	                        n++;
+	                        cout<<"\nDo you want to add more records(y/n) ";
+	                        cin>>c;
+	                    }while(c=='Y'||c=='y');
+	                    break;
+ 
+	            case 2: if(n==0)
+	                    {
+	                        cout<<"\nDatabase is empty\n";
+	                        break;
+	                    }
+	                    else
+	                    {
+	                        displaydb();
+	                    }
+	                    break;
+ 
+	            case 3: if(n==0)
+	                    {
+	                        cout<<"\nDatabase is not created\n";
+	                        break;
+	                    }
+	                    else
+	                    {
+	                        addrec();
+	                        n++;
+	                    }
+	                    break;
+ 
+	            case 4: if(n==0)
+	                    {
+	                        cout<<"\nDatabase is empty\n";
+	                        break;
+	                    }
+	                    else
+	                        searchrec();
+	                    break;
+	            case 5: if(n==0)
+	                    {
+	                        cout<<"\nDatabase is empty\n";
+	                        break;
+	                    }
+	                    else
+	                        editrec();
+	                    break;
+	            case 6: if(n==0)
+	                    {
+	                        cout<<"\nDatabase is empty\n";
+	                        break;
+	                    }
+	                    if(deleterec())
+	                        n--;
+	                    break;
+ 
+	            default : cout<<"\nWrong choice";
+        	}
+    	cout<<"\nDo you want to go back to main menu again(y/n) ";
+    	cin>>c;
+    }while(c=='Y'||c=='y');
+ 
+	return 0;
+}
+ 
+//<================================================================================================>
+ 
+void del_all_rec()
+{
+    ofstream out;
+    out.open("stu_rec.txt");
+    out.close();
+}
+ 
+void createdb()
+{
+    //int i, flag, r;
+    //char dummy;
+    struct student s;
+    fstream file;
+    file.open("stu_rec.txt",ios::app);
+    if(!file)
+    {
+        cout<<"\nError accessing file";
+    }
+    else
+    {
+        cout<<"\nEnter roll number of student : ";
+        cin>>s.roll;
+        cout<<"\nEnter name of student : ";
+        cin>>s.name;
+        cout<<"\nEnter marks obtained by student in subject 1(max 100) : ";
+        cin>>s.m1;
+        cout<<"\nEnter marks obtained by student in subject 2(max 100) : ";
+        cin>>s.m2;
+        s.per=(float)(s.m1+s.m2)/2.0;
+ 
+        file.write((char*)&s,sizeof(s));
+ 
+        file.close();
+    }
+}
+ 
+void displaydb()
+{
+    int i=1;
+    struct student s;
+    ifstream in("stu_rec.txt");
+    if(!in)
+    {
+        cout<<"\nError accessing file";
+    }
+    else
+    {
+        while(in.read((char*)&s,sizeof(s)))
+        {
+            cout<<"\nRecord number ; "<<i;
+            cout<<"\n---------------------";
+            cout<<"\nRoll number of student - "<<s.roll;
+            cout<<"\nname of student - "<<s.name;
+            cout<<"\nMarks obtained by student in subject 1 - "<<s.m1;
+            cout<<"\nMarks obtained by student in subject 2 - "<<s.m2;
+            cout<<"\nPercentage obtained by student - "<<s.per;
+            i++;
+        }
+    }
+    in.close();
+}
+ 
+void addrec()
+{
+    int i=1, pos;
+    struct student s, a;
+ 
+    ifstream in("stu_rec.txt");
+    ofstream out("temp_rec.txt");
+ 
+    if(!in || !out)
+    {
+        cout<<"\nError accessing file";
+    }
+    else
+    {
+        cout<<"\nEnter the place where you want to Enter the record ";
+        cin>>pos;
+ 
+        cout<<"\nEnter roll number of student ";
+        cin>>s.roll;
+        cout<<"\nEnter name of student ";
+        cin>>s.name;
+        cout<<"\nEnter marks obtained by student in subject 1(max 100) ";
+        cin>>s.m1;
+        cout<<"\nEnter marks obtained by student in subject 2(max 100) ";
+        cin>>s.m2;
+        s.per=(float)(s.m1+s.m2)/2.0;
+ 
+        while(in.read((char*)&a,sizeof(a)))
+        {
+            if(i!=pos)
+            {
+                out.write((char*)&a,sizeof(a));
+            }
+            else
+            {
+                out.write((char*)&s,sizeof(s));
+                out.write((char*)&a,sizeof(s));
+            }
+            i++;
+        }
+        if(pos>=i)
+        {
+            out.write((char*)&s,sizeof(s));
+            cout<<"\nRecord added to the end of file ";
+        }
+    out.close();
+    in.close();
+    remove("stu_rec.txt");
+    rename("temp_rec.txt","stu_rec.txt");
+    }
+}
+ 
+void searchrec()
+{
+    int flag=0,r,pos=0;
+    struct student a;
+ 
+    ifstream in;
+    in.open("stu_rec.txt");
+    if(!in)
+    {
+        cout<<"\nError accessing file";
+    }
+    else
+    {
+        cout<<"\nEnter the roll number of student whose record you want to search";
+        cin>>r;
+        while(in.read((char*)&a,sizeof(a)))
+        {
+            pos++;
+            if(a.roll==r)
+            {
+                flag=1;
+                break;
+            }
+        }
+        if(flag==1)
+        {
+            cout<<"\nRecord found at position - "<<pos;
+        }
+        else
+            cout<<"\nRecord not found ! :(";
+        in.close();
+    }
+}
+ 
+void editrec()
+{
+    char dummy,ch;
+    int x,r,flag=0;
+    struct student s,a;
+ 
+    ofstream out;
+    ifstream in;
+ 
+    in.open("stu_rec.txt");
+    out.open("temp_rec.txt");
+    if(!in || !out)
+    {
+        cout<<"\nError accessing file";
+    }
+    else
+    {
+        cout<<"\nEnter the roll number of student whose record you want to edit ";
+        cin>>r;
+        while(in.read((char*)&s,sizeof(s)))
+        {
+            if(s.roll!=r)
+            {
+                out.write((char*)&s,sizeof(s));
+            }
+            else
+            {
+                a=s;
+                cout<<"\n1.Name";
+                cout<<"\n2.Marks in subject 1";
+                cout<<"\n3.Marks in subject 2";
+                do
+                {
+                    cout<<"\nEnter the field number you want to edit ";
+                    cin>>x;
+                    switch(x)
+                    {
+                        case 1: cout<<"\nEnter new name of the student ";
+                                cin>>a.name;
+                                break;
+                        case 2: cout<<"\nEnter new marks of the student in subject 1 ";
+                                cin>>a.m1;
+                                break;
+                        case 3: cout<<"\nEnter new marks of the student in subject 2 ";
+                                cin>>a.m2;
+                                break;
+                        default:cout<<"\nWrong choice ";
+                    }
+                    cout<<"\nDo you want to edit more fields(y/n) ";
+                    cin>>ch;
+                }while(ch=='y'||ch=='Y');
+                a.per=(float)(a.m1+a.m2)/2.0;
+                out.write((char*)&a,sizeof(a));
+                flag=1;
+            }
+        }
+        if(flag==1)
+        {
+            cout<<"\nRecord updated successfully \nupdated record";
+            cout<<"\nRoll number of student - "<<a.roll;
+            cout<<"\nname of student - "<<a.name;
+            cout<<"\nMarks obtained by student in subject 1 - "<<a.m1;
+            cout<<"\nMarks obtained by student in subject 2 - "<<a.m2;
+            cout<<"\nPercentage obtained by student - "<<a.per;
+        }
+        else
+        {
+            cout<<"\nRecord not found";
+        }
+        in.close();
+        out.close();
+        remove("stu_rec.txt");
+        rename("temp_rec.txt","stu_rec.txt");
+    }
+}
+ 
+int deleterec()
+{
+    int flag=0,r;
+    struct student a;
+ 
+    ofstream out;
+    ifstream in;
+    in.open("stu_rec.txt");
+    out.open("temp_rec.txt");
+ 
+    if(!in || !out)
+    {
+        cout<<"\nError accessing file";
+    }
+    else
+    {
+        cout<<"\nEnter the roll number of student whose record you want to delete ";
+        cin>>r;
+        while(in.read((char*)&a,sizeof(a)))
+        {
+            if(a.roll!=r)
+            {
+                out.write((char*)&a,sizeof(a));
+            }
+            if(a.roll==r)
+            {
+                flag=1;
+            }
+        }
+    if(flag==1)
+        cout<<"\nRecord deleted successfully from file";
+    else
+        cout<<"\nRecord not found";
+    in.close();
+    out.close();
+    remove("stu_rec.txt");
+    rename("temp_rec.txt","stu_rec.txt");
+    }
+return flag;
+}
